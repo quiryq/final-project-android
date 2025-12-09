@@ -1,6 +1,5 @@
 package com.example.final_project_android.data.db
 
-
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
@@ -12,6 +11,7 @@ import com.example.final_project_android.data.model.Meal
 @Dao
 interface MealDao {
 
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(meal: Meal)
 
@@ -19,6 +19,9 @@ interface MealDao {
     suspend fun deleteMeal(meal: Meal)
 
 
-    @Query("SELECT * FROM meals_table")
-    fun getAllMeals(): LiveData<List<Meal>>
+
+
+    @Query("SELECT * FROM meals_table WHERE name LIKE '%' || :searchQuery || '%'")
+    suspend fun searchMeals(searchQuery: String): List<Meal>
+
 }
